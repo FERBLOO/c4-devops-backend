@@ -6,7 +6,7 @@ import http from 'http';
 import dotenv from 'dotenv';
 
 // middlewares
-import validateAuthentication from './middlewares/authentication.middlewares.js';
+import validateAuthentication from './middlewares/authentication.middleware.js';
 
 // utilities
 import connect from './database.js';
@@ -23,8 +23,7 @@ connect();
 
 const startApolloServer = async (typeDefs, resolvers) => {
   // eslint-disable-next-line no-undef
-  const PORT = 4000;
- // const PORT = process.env.PORT;
+  const PORT = process.env.PORT;
   const app = express();
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
@@ -40,3 +39,4 @@ const startApolloServer = async (typeDefs, resolvers) => {
 };
 
 startApolloServer(typeDefs, resolvers);
+

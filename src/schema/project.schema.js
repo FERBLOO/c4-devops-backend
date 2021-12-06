@@ -14,6 +14,7 @@ const projectType = gql`
     status: ProjectStatus!
     phase: Phase
     leader: User!
+    enrollments: [Enrollment]
   }
 `;
 
