@@ -1,30 +1,56 @@
 import Projects from "../models/projects.model.js";
 import Users from "../models/users.model.js";
 import Enrollements from "../models/enrollments.model.js";
+import { AuthenticationError, ForbiddenError } from 'apollo-server';
+// import jwt from 'jsonwebtoken';
+// import bcrypt from 'bcrypt';
+
+// constants
+import { ROLES } from '../constants/user.constants.js';
 
 const allProjects = async (parent, args, { user, errorMessage }) => {
   if(!user) {
     throw new Error(errorMessage);
   }
+  if(user.role !== ROLES.ADMIN) {
+    throw new ForbiddenError('No access');
+  }
   const projects = await Projects.find();
   return projects;
 };
 
-const addProject = async (parent, args) => {
+const addProject = async (parent, args, {user, errorMessage}) => {
+  if(!user) {
+    throw new AuthenticationError(errorMessage);
+  }
   let project = new Projects(args.input);
   project = await project.save();
   return project;
 };
+
+// const addProject = async (parent, args) => {
+//   const project = new Projects({
+//     ...args.input,
+//     // status: USER_STATUS.PENDING,
+//     // fullName: `${args.input.name} ${args.input.lastName}`,
+//     // password: await bcrypt.hash(args.input.password, 12),
+//   });
+//   return user.save();
+// };
 
 const projectById = async (parent, args) => {
   const project = await Projects.findById(args._id);
   return project;
 };
 
-//pending solve issue date in sandbox
-const updateProject = async (parent, args) => {
+//mutations Projects
+
+const updateProject = async (parent, args, {user, errorMessage}) => {
+  if(!user) {
+    throw new AuthenticationError(errorMessage);
+  }
   const projectUpdated = await Projects.findOneAndUpdate(
-    { _id: args.input.projectById },
+    { _id: args.input.projectById,  },
     {
       name: args.input.name,
       generalObjective: args.input.generalObjective,
@@ -40,6 +66,17 @@ const updateProject = async (parent, args) => {
   return projectUpdated;
 };
 
+const deleteProject = async (parent, args, {user, errorMessage}) => {
+  if(!user) {
+    throw new AuthenticationError(errorMessage);
+  }
+  const projectDeleted = await Projects.findByIdAndDelete(
+    { _id: args.input.projectById,  },
+    
+    { new: true }
+  );
+  return projectDeleted;
+};
 
 
 const project = async (parent, args) => {
@@ -70,5 +107,6 @@ export default {
   projectMutations: {
     addProject,
     updateProject,
+    deleteProject,
   },
 };
