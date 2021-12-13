@@ -3,13 +3,18 @@ import { ApolloServer } from 'apollo-server-express';
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 import express from 'express';
 import http from 'http';
+//import cors from "cors";
 import dotenv from 'dotenv';
+
+
 
 // middlewares
 import validateAuthentication from './middlewares/authentication.middleware.js';
 
 // utilities
 import connect from './database.js';
+
+
 
 // typeDefs
 import typeDefs from './schema/index.js';

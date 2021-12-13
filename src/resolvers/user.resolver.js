@@ -55,7 +55,7 @@ const login = async (parent, args) => {
     { user },
     // eslint-disable-next-line no-undef
     process.env.SECRET,
-    { expiresIn: '30m' }
+    { expiresIn: '5m' }
   );
   return token;
 };
