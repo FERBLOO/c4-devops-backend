@@ -71,6 +71,11 @@ const queries = gql`
   type Mutation {
     activetProject(input: ActiveProjectInput!): Project!
   }
+
+  type Mutation {
+    deleteProject(input: UpdateProjectInput): [Project]!
+  }
+
 `;
 
 const inputs = gql`
@@ -80,6 +85,9 @@ const inputs = gql`
     specificObjectives: [String]!
     budget: Float!
     leader_id: ID!
+    startDate: String!
+    endDate: String!
+    status: ProjectStatus!
   }
 
   input UpdateProjectInput {
@@ -95,6 +103,12 @@ const inputs = gql`
   input ActiveProjectInput {
     _id: ID!
     status: ProjectStatus!
+  }
+  
+  input deleteProjectInput {
+    _id: ID!
+    starus: ProjectStatus!
+
   }
 
 `;
