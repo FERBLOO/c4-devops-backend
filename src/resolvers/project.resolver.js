@@ -10,6 +10,38 @@ const allProjects = async (parent, args, { user, errorMessage }) => {
   return projects;
 };
 
+const addProject = async (parent, args) => {
+  let project = new Projects(args.input);
+  project = await project.save();
+  return project;
+};
+
+const projectById = async (parent, args) => {
+  const project = await Projects.findById(args._id);
+  return project;
+};
+
+//pending solve issue date in sandbox
+const updateProject = async (parent, args) => {
+  const projectUpdated = await Projects.findOneAndUpdate(
+    { _id: args.input.projectById },
+    {
+      name: args.input.name,
+      generalObjective: args.input.generalObjective,
+      specificObjectives: args.input.specificObjectives,
+      budget: args.input.budget,
+      // startDate: args.input.startDate,
+      // endDate: args.input.endDate,
+      status: args.input.status,
+      phase: args.input.phase,
+    },
+    { new: true }
+  );
+  return projectUpdated;
+};
+
+
+
 const project = async (parent, args) => {
   const user = await Projects.findById(args._id);
   return user;
@@ -29,9 +61,14 @@ export default {
   projectQueries: {
     allProjects,
     project,
+    projectById,
   },
   Project: {
     leader,
     enrollments,
-  }
+  },
+  projectMutations: {
+    addProject,
+    updateProject,
+  },
 };

@@ -36,7 +36,9 @@ const projectsSchema = new Schema({
     required: true,
   },
   phase: {
-    type: String
+    type: String,
+    enum: ['STARTED, IN_PROGRESS, ENDED'],
+    required: true,
   }
 });
 

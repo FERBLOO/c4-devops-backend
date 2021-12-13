@@ -8,6 +8,23 @@ const allEnrollments = async () => {
   return enrollments;
 }
 
+const enrollmentById = async (parent, args) => {
+  const enrollment = await Enrollments.findById(args._id);
+  return enrollment;
+};
+
+// Returns a list of enrollments where user is enroll
+const enrollmentByUserId = async (parent, args) => {
+  const user = await Users.findById(args.user_id);
+
+  if (!user){
+    throw new Error("User does not exist");
+  }
+
+  const enrollments = await Enrollments.find({ user_id: user._id });
+  return enrollments
+}
+
 const project = async (parent) => {
   const project = await Projects.findById(parent.project_id);
   return project;
@@ -20,10 +37,13 @@ const student = async (parent) => {
 
 export default {
   enrollmentQueries: {
-    allEnrollments
+    allEnrollments,
+    enrollmentById,
+    enrollmentByUserId,
   },
   Enrollment: {
     project,
     student,
-  }
+  },
+
 }
