@@ -9,8 +9,21 @@ const ROLES = {
     AUTHORIZED: 'AUTHORIZED',
     UNAUTHORIZED: 'UNAUTHORIZED',
   };
+  const PROJECT_STATUS = {
+    ACTIVE: 'ACTIVE',
+    INACTIVE: 'INACTIVE',
+  };
   
+  const PROJECT_PHASE = {
+    STARTED: 'STARTED',
+    IN_PROGRESS: 'IN_PROGRESS',
+    ENDED: 'ENDED'
+  };
+
   export {
     ROLES,
     USER_STATUS,
+    PROJECT_STATUS,
+    PROJECT_PHASE,
+
   };
