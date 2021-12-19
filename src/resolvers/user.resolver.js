@@ -17,6 +17,10 @@ const allUsers = async (parent, args, { user, errorMessage }) => {
   if(user.role !== ROLES.ADMIN) {
     throw new ForbiddenError('No access');
   }
+  if(user.status !== USER_STATUS.AUTHORIZED) {
+    throw new ForbiddenError('No access');
+  }
+
   return await Users.find();
 };
 
@@ -71,7 +75,19 @@ const updateUser = async (parent, args, { user, errorMessage }) => {
   }
   const updatedUser = Users.findByIdAndUpdate(user._id, { ...args.input }, { new: true });
   return updatedUser;
-}
+};
+
+const updateStateUser = async (parent, args, { user, errorMessage }) => {
+  if(!user) {
+    throw new AuthenticationError(errorMessage);
+  }
+  if(user.role !== ROLES.ADMIN) {
+    throw new ForbiddenError('No access');
+  }
+  const updatedStateUser = await Users.findOneAndUpdate({email: args.input.userByEmail}, { status: user.status }, { new: true });
+  return updatedStateUser;
+  };
+
 
 export default {
   userQueries: {
@@ -83,6 +99,7 @@ export default {
     register,
     login,
     updateUser,
+    updateStateUser,
   },
   User: {
     enrollments,
