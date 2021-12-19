@@ -63,6 +63,11 @@ const mutations = gql`
     updateUser(input: UpdateInput!): User!
   }
 
+  type Mutation {
+    updateStateUser(input: UpdateInput!): User!
+  }
+
+
 `;
 
 const inputs = gql`
